@@ -1,12 +1,17 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+
+
 class UrbanRoutesPage:
 	from_field = (By.ID, 'from')
 	to_field = (By.ID, 'to')
-	call_taxi_button = (By.XPATH, '//button[has(text(), "Call a taxi")]')
-	tariff_cards = (By.CLASS_NAMED, 'tariff-cards')
+	call_taxi_button = (By.XPATH, '//button[contains(text(), "Call a taxi")]')
+	tariff_cards = (By.CLASS_NAME, 'tariff-cards')
 	supportive_plan_card = (By.XPATH, 'div[@class="tcard"]//div[contains(text(), "Supportive")]')
 
 
-	def __init__(driver):
+	def __init__(self, driver):
 		self.driver = driver
 
 
@@ -15,7 +20,7 @@ class UrbanRoutesPage:
 
 
 	def set_to(self, to_address):
-		self.driver.find_elements(*self.to_field).send_keys(to_address)
+		self.driver.find_element(*self.to_field).send_keys(to_address)
 
 
 	def get_from(self):
@@ -27,8 +32,8 @@ class UrbanRoutesPage:
 
 
 	def click_call_taxi_button(self):
-		WebDriverWait(self.driver,"3").until(expected_conditions.visibility_of_element_located(call_taxi_button))
-		self.driver.find_element(*call_taxi_button).click()
+		WebDriverWait(self.driver, 3).until(expected_conditions.visibility_of_element_located(self.call_taxi_button))
+		self.driver.find_element(*self.call_taxi_button).click()
 
 
 	def set_route(self, from_address, to_address):
@@ -38,6 +43,7 @@ class UrbanRoutesPage:
 
 
 	def select_supportive_plan(self):
-		card = WebDriverWait(self.driver,3).until(expected_conditions.visibility_of_element_located(self.supportive_plan_card))
-		driver.execute_script("arguments[0].scrollIntoView();", card)
+		card = WebDriverWait(self.driver, 3).until(expected_conditions.visibility_of_element_located(self.supportive_plan_card))
+		self.driver.execute_script("arguments[0].scrollIntoView();", card)
 		card.click().click()
+
